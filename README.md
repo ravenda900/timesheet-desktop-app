@@ -1,9 +1,10 @@
 # Pywebview with Vite React
 
-This is a  simple boilerplate to help you start with _pywebview_, Vite, and React.
+This is a simple boilerplate to help you start with _pywebview_, Vite, and React.
 Stack is based on pywebview, React, Vite bundler, pyinstaller (Windows/Linux) and py2app (macOS).
 
 ## Requirements
+
 - Python 3
 - Node
 
@@ -26,7 +27,7 @@ pip install -r requirements.txt
 ### Windows
 
 ```shell
-npm run init
+pnpm run init
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r requirements.txt
@@ -41,19 +42,19 @@ pip install -r requirements.txt
 ### Only the frontend
 
 ```shell
-npm run dev
+pnpm dev
 ```
 
 ### Build the frontend and run the backend in dev mode
 
 ```shell
-npm run start
+pnpm start
 ```
 
 ## Build
 
 ```shell
-npm run build
+pnpm build
 ```
 
 ## License

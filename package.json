@@ -1,20 +1,20 @@
 {
-  "name": "pywebview-with-vite-react",
-  "version": "0.0.0",
+  "name": "timesheet-desktop-app",
+  "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "npm run clean && npm run build-frontend && run-script-os",
+    "build": "pnpm clean && pnpm build-frontend && run-script-os",
     "build:macos": "./venv/bin/python build-macos.py py2app",
     "build:windows": ".\\venv\\Scripts\\pyinstaller build-windows.spec",
     "build:linux": "./venv/bin/pyinstaller build-linux.spec",
-    "build-frontend": "cd frontend && npm run build",
+    "build-frontend": "cd frontend && pnpm build",
     "clean": "run-script-os",
     "clean:default": "rm -rf dist 2>/dev/null; rm -rf gui 2>/dev/null; rm -rf build 2>/dev/null; ",
     "clean:windows": "if exist dist rd /S /Q dist & if exist build rd /S /Q build & if exist gui rd /S /Q gui",
-    "dev": "cd frontend && npm run dev",
-    "init": "npm install && npm run init-frontend",
-    "init-frontend": "cd frontend && npm install",
-    "start": "npm run build-frontend && run-script-os",
+    "dev": "cd frontend && pnpm dev",
+    "init": "pnpm i && pnpm init-frontend",
+    "init-frontend": "cd frontend && pnpm i",
+    "start": "pnpm build-frontend && run-script-os",
     "start:windows": ".\\venv\\Scripts\\python backend\\index.py",
     "start:default": "./venv/bin/python backend/index.py"
   },
@@ -45,5 +45,8 @@
   ],
   "devDependencies": {
     "run-script-os": "^1.1.6"
+  },
+  "dependencies": {
+    "timesheet-desktop-app": "file:"
   }
 }

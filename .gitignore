@@ -5,3 +5,6 @@ dist
 
 .DS_Store
 node_modules
+config.ini
+secret.key
+credentials.json
