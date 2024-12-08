@@ -2,9 +2,14 @@ venv
 gui
 build
 dist
+backend/__pycache__
 
 .DS_Store
 node_modules
 config.ini
 secret.key
 credentials.json
+
+backend/__pycache__/
+.idea/
+timesheet_entry.log*

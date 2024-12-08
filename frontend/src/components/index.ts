@@ -1,3 +1,2 @@
-export * from "./Editor/Editor";
-export * from "./Header/Header";
-export * from "./Ticker/Ticker";
+export * from "./Configure";
+export * from "./Login";

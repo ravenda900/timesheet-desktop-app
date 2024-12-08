@@ -1,15 +1,29 @@
-import { useEffect, useMemo, useState } from "react";
-import { Login } from "./components/Login";
-import { Divider, Spin, Typography } from "antd";
+import { Spin, Typography } from "antd";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Configure } from "./components/Configure";
+import { Login } from "./components/Login";
 
-export const App = () => {
+export const App: FC = () => {
   const [hasCredentials, setHasCredentials] = useState<boolean>();
 
   useEffect(() => {
-    (async () => {
-      setHasCredentials(await window.pywebview.api.has_credentials());
-    })();
+    const handlePywebviewReady = () => {
+      if (!window.pywebview.state) {
+        window.pywebview.state = {};
+      }
+
+      window.pywebview.state.setHasCredentials = setHasCredentials;
+    };
+
+    if (window.pywebview) {
+      handlePywebviewReady();
+    } else {
+      window.addEventListener("pywebviewready", handlePywebviewReady);
+    }
+
+    return () => {
+      window.removeEventListener("pywebviewready", handlePywebviewReady);
+    };
   }, []);
 
   const content = useMemo(() => {
@@ -22,7 +36,6 @@ export const App = () => {
   return (
     <div className="p-5">
       <Typography.Title level={3}>Timesheet Desktop App</Typography.Title>
-      <Divider />
       <div className="mt-3">{content}</div>
     </div>
   );

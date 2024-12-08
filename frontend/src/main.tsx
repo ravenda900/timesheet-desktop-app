@@ -2,20 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
 import "./index.css";
-import type { ConfigureFormProps, ProjectIssue } from "./types";
+import type { ConfigureFormProps, JiraUser } from "./types";
 
 declare global {
   interface Window {
     pywebview: {
       api: {
-        has_credentials: () => Promise<boolean>;
         store_credentials: (email: string, password: string) => Promise<void>;
         store_configuration: (config: ConfigureFormProps) => Promise<void>;
         get_configuration: (isApi: boolean) => Promise<ConfigureFormProps>;
         has_configuration: () => Promise<boolean>;
-        get_projects: () => Promise<ProjectIssue[]>;
+        get_myself: (email: string, password: string) => Promise<JiraUser>;
+        create_timesheet: () => Promise<void>;
+        create_missing_entries: () => Promise<void>;
+        create_missing_entry: (date: string) => Promise<void>;
+        get_missing_entries: () => Promise<string[]>;
       };
-      [key: string]: unknown;
+      state: {
+        [key: string]: unknown;
+      };
     };
   }
 }

@@ -59,3 +59,30 @@ export type ProjectIssue = {
   timesheetAssignedGroups: Group[];
   workpackages: unknown[];
 };
+
+export type JiraUser = {
+  self: string;
+  key: string;
+  name: string;
+  emailAddress: string;
+  avatarUrls: {
+    "48x48": string;
+    "32x32": string;
+    "24x24": string;
+    "16x16": string;
+  };
+  displayName: string;
+  active: boolean;
+  deleted: boolean;
+  timeZone: boolean;
+  locale: string;
+  groups: {
+    size: number;
+    items: unknown[];
+  };
+  applicationRoles: {
+    size: number;
+    items: unknown[];
+  };
+  expand: string;
+};

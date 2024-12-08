@@ -1,31 +1,24 @@
 import os
 import webview
+from helpers import set_interval
 from config import Config
 from timesheet import Timesheet
+import json
 
 class Api:
-    def __init__(self, encryption_manager, email, password):
+    def __init__(self, encryption_manager):
         self.encryption_manager = encryption_manager
-        self.email, self.password = self.encryption_manager.load_credentials()
+        self.timesheet = Timesheet(encryption_manager, self)
         self.config = Config()
-        self.timesheet = Timesheet(email, password, self)
-
-    def fullscreen(self):
-        webview.windows[0].toggle_fullscreen()
-
-    def save_content(self, content):
-        filename = webview.windows[0].create_file_dialog(webview.SAVE_DIALOG)
-        if not filename:
-            return
-
-        with open(filename, "w") as f:
-            f.write(content)
-
-    def ls(self):
-        return os.listdir(".")
     
+    @set_interval(1)
     def has_credentials(self):
-        return self.email and self.password
+        if len(webview.windows) > 0:
+            email, password = self.encryption_manager.load_credentials()
+            has_credentials = bool(email and password)
+            webview.windows[0].evaluate_js(
+                f'window.pywebview.state && window.pywebview.state.setHasCredentials && window.pywebview.state.setHasCredentials({'true' if has_credentials else 'false'})'
+            )
     
     def store_credentials(self, email, password):
         self.encryption_manager.store_credentials(email, password)
@@ -38,6 +31,31 @@ class Api:
 
     def get_configuration(self, is_api):
         return self.config.read_config(is_api)
+    
+    def create_timesheet(self):
+        self.timesheet.create_timesheet()
 
+    def create_missing_entries(self):
+        if hasattr(self.timesheet, 'missing_entries'):
+            for missing_entry in self.timesheet.missing_entries:
+                self.timesheet.create_timesheet_entry(missing_entry)
+
+    def create_missing_entry(self, date):
+        self.timesheet.create_timesheet_entry(date)
+
+    @set_interval(1)
     def get_projects(self):
-        return self.timesheet.projects
+        if len(webview.windows) > 0 and hasattr(self.timesheet, 'projects'):
+            webview.windows[0].evaluate_js(
+                'window.pywebview.state && window.pywebview.state.setProjectIssueOptions && window.pywebview.state.setProjectIssueOptions(%s)' % json.dumps(self.timesheet.projects)
+            )
+    
+    def get_myself(self, email, password):
+        return self.timesheet.get_myself(email, password)
+    
+    @set_interval(1)
+    def get_missing_entries(self):
+        if len(webview.windows) > 0 and hasattr(self.timesheet, 'missing_entries'):
+            webview.windows[0].evaluate_js(
+                'window.pywebview.state && window.pywebview.state.setMissingEntries && window.pywebview.state.setMissingEntries(%s)' % json.dumps(self.timesheet.missing_entries)
+            )
